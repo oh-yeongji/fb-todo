@@ -2,6 +2,7 @@ import React from "react";
 import ListItem from "./ListItem";
 
 const List = ({ todoData, setTodoData }) => {
+  console.log("List 랜더링");
   return (
     <div>
       {/* 밑은 자스 자리 */}
@@ -18,4 +19,4 @@ const List = ({ todoData, setTodoData }) => {
   );
 };
 
-export default List;
+export default React.memo(List);

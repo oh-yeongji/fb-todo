@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
-const Form = ({ todoData ,setTodoData }) => {
+const Form = ({ todoData, setTodoData }) => {
+  console.log("Form 랜더링");
   // 새로운 할일 state 변수
   const [value, setValue] = useState("");
 
