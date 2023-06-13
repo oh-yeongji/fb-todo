@@ -9,6 +9,7 @@ const List = ({ todoData, setTodoData }) => {
       {todoData.map(item => (
         //key는 반복문에서 unique해야함.
         <ListItem
+          // 여기서 key는 for 용
           key={item.id}
           item={item}
           todoData={todoData}
