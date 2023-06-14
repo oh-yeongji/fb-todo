@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ListItem = ({ item, todoData, setTodoData }) => {
   // console.log("ListItem 랜더링", item);
   const [isEdit, setIsEdit] = useState(false);
   //편집 상태 타이틀 설정 state
   const [editTitle, setEditTitle] = useState(item.title);
+
+  useEffect(() => {
+    setEditTitle(item.title);
+  }, []);
 
   const getStyle = _completed => {
     return {
@@ -13,7 +17,7 @@ const ListItem = ({ item, todoData, setTodoData }) => {
     };
   };
   //이벤트 핸들러
-  
+
   const handleEditClick = () => {
     setIsEdit(true);
   };
@@ -55,8 +59,6 @@ const ListItem = ({ item, todoData, setTodoData }) => {
 
     let newTodoData = todoData.map(item => {
       if (item.id === _id) {
-
-
         //completed를 갱신.
         //true였던 걸 false로 false였던걸 true로
         item.completed = !item.completed;
@@ -64,8 +66,8 @@ const ListItem = ({ item, todoData, setTodoData }) => {
       return item;
     });
     setTodoData(newTodoData);
-  // 로컬스토리지 저장
-  localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+    // 로컬스토리지 저장
+    localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
   };
 
   if (isEdit) {
@@ -76,8 +78,12 @@ const ListItem = ({ item, todoData, setTodoData }) => {
           <input
             className="w-full px-3 py-2 mr-3 text-gray-500 rounded"
             type="text"
-            value={editTitle}
-            onChange={handleEditChange}
+            // defaultValue={""}
+            defaultValue={item.title}
+            //흠
+            // value={editTitle}
+            // value={item.title}
+            onChange={e => handleEditChange(e)}
           />
         </div>
         <div className="items-center">
