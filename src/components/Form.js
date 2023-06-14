@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const Form = ({ todoData, setTodoData }) => {
-  console.log("Form 랜더링");
+  // console.log("Form 랜더링");
   // 새로운 할일 state 변수
   const [value, setValue] = useState("");
 
@@ -20,6 +20,9 @@ const Form = ({ todoData, setTodoData }) => {
     //그리고state저장. 화면이 랜더링 된다.
     //todoData에 추가.
     setTodoData([...todoData, newTodo]);
+    
+    //로컬스토리지 저장
+    localStorage.setItem("fbTodoData", JSON.stringify(todoData));
     //입력창 초기화
     setValue("");
   };
