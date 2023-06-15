@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import SingUpDiv from "../style/UserCss";
+import SignUpDiv from "../style/UserCss";
 import { useNavigate } from "react-router-dom";
+// firebase 연동
+import firebase from "../firebase";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -8,27 +10,44 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [pwConfirm, setPwConfirm] = useState("");
-  const handleSignUp = e => {
+
+  const handleSignUp = async e => {
     e.preventDefault();
-    //firebase에 회원가입 하기
+    try {
+      console.log("회원가입 - firebase 연동");
+      // firebase 에 회원 가입하기
+      let createUser = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, pw);
+
+      await createUser.user.updateProfile({
+        name: nickName,
+      });
+      console.log("등록된 정보 : ", createUser.user);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      // 회원가입 완료 시 홈 화면으로
+      navigate("/");
+    }
   };
   return (
-    <div className="p-6 mt-5 shadow rounded-md bg-white">
-      <h2>Singup</h2>
-      {/* 
-        1. emotion 을 활용하여 tag 의 용도를 구분한다. 
-        2. css 도 함께 적용한다.
-      */}
-      <SingUpDiv>
-        <form>
-          <label htmlFor="">별칭</label>
+    <div className="p-6 m-5 shadow rounded bg-white flex flex-col">
+      <h2>Sing Up</h2>
+      {/*
+       * emotion 을 활용하여 tag 의 용도를 구분한다
+       * css 도 함께 적용한다
+       */}
+      <SignUpDiv>
+        <form className="shadow bg-white rounded-lg">
+          <label htmlFor="">닉네임</label>
           <input
             type="text"
             required
             value={nickName}
             onChange={e => setNickName(e.target.value)}
-            maxLength={10}
             minLength={2}
+            maxLength={10}
           />
           <label htmlFor="">이메일</label>
           <input
@@ -40,6 +59,7 @@ const SignUp = () => {
           <label htmlFor="">비밀번호</label>
           <input
             type="password"
+            autoComplete="off"
             value={pw}
             onChange={e => setPw(e.target.value)}
             required
@@ -50,12 +70,14 @@ const SignUp = () => {
           <input
             type="password"
             value={pwConfirm}
-            onChange={e => setPwConfirm(e.target.value)}
+            onChange={e => {
+              setPwConfirm(e.target.value);
+            }}
             required
             minLength={8}
             maxLength={16}
           />
-          <div className="flex justify-center gap-5 w-full">
+          <div className="btn-list flex justify-center gap-5 w-full">
             <button
               className="border rounded px-3 py-2 shadow"
               onClick={e => handleSignUp(e)}
@@ -73,7 +95,7 @@ const SignUp = () => {
             </button>
           </div>
         </form>
-      </SingUpDiv>
+      </SignUpDiv>
     </div>
   );
 };
