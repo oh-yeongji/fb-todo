@@ -41,6 +41,7 @@ const ListItem = ({ item, todoData, setTodoData }) => {
     setIsEdit(false); //편집이 끝남
     // 로컬스토리지 저장
     localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+    //axios delete 호출 fbtodolist 삭제하기
   };
   const handleDeleteClick = _id => {
     //전달된 ID를 검색해서 목록에서 제거
@@ -48,9 +49,11 @@ const ListItem = ({ item, todoData, setTodoData }) => {
     //2. 새로운 목록으로 갱신해서 화면 리랜더링
     //3. 배열의 고차함수 중 filter를 사용
     const newTodoData = todoData.filter(item => item.id !== _id);
-    setTodoData(newTodoData);
     // 로컬스토리지 저장
     localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+    //axios fetch 호출 fbtodolist 삭제하기
+    setTodoData(newTodoData);
+    //
   };
   const handleCompleteChange = _id => {
     //중요한 것은 id에 해당하는것만 수정하면 되는게 아님.
@@ -68,6 +71,7 @@ const ListItem = ({ item, todoData, setTodoData }) => {
     setTodoData(newTodoData);
     // 로컬스토리지 저장
     localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+    //axios fetch/put 호출 fbtodolist 삭제하기
   };
 
   if (isEdit) {
