@@ -20,12 +20,25 @@ const SignUp = () => {
         .auth()
         .createUserWithEmailAndPassword(email, pw);
 
+      //회원 가입 성공시 사용자 이름을 업데이트
       await createUser.user.updateProfile({
-        name: nickName,
+        displayName: nickName,
       });
+      //로그인 창으로 이동
+      navigate("/login");
       console.log("등록된 정보 : ", createUser.user);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      //회원가입 시 에러 처리
+      console.error(error.code);
+      if (error.code == "auth/email-already-in-use") {
+        alert("The email address is already in use");
+      } else if (error.code == "auth/invalid-email") {
+        alert("The email address is not valid.");
+      } else if (error.code == "auth/operation-not-allowed") {
+        alert("Operation not allowed.");
+      } else if (error.code == "auth/weak-password") {
+        alert("The password is too weak.");
+      }
     } finally {
       // 회원가입 완료 시 홈 화면으로
       navigate("/");
@@ -33,7 +46,7 @@ const SignUp = () => {
   };
   return (
     <div className="p-6 m-5 shadow rounded bg-white flex flex-col">
-      <h2>Sing Up</h2>
+      <h2>Sign Up</h2>
       {/*
        * emotion 을 활용하여 tag 의 용도를 구분한다
        * css 도 함께 적용한다
