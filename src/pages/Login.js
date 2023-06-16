@@ -1,20 +1,24 @@
 import React, { useState } from "react";
-import { LoginDiv } from "../style/UserCss";
+
 import { useNavigate } from "react-router-dom";
 import firebase from "../firebase";
+import { Button, Checkbox, Form, Input, Modal } from "antd";
 
 const Login = ({ setFBName, setFBEmail, setFBUid }) => {
   // Link , NavLink , useNavigate
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
   //로그인
-  const handleLogin = async e => {
-    // console.log(e.target);
-    e.preventDefault();
+
+  const onFinish = async values => {
+    console.log("Success:", values);
+
     //firebase 로그인 시도
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
+      //values 이 부분은 원래는 state
+      await firebase
+        .auth()
+        .signInWithEmailAndPassword(values.email, values.password);
       console.log("로그인 성공");
       //로그인 된 사용자 정보를 가지고 옴.
       const user = firebase.auth().currentUser;
@@ -25,74 +29,133 @@ const Login = ({ setFBName, setFBEmail, setFBUid }) => {
       navigate("/");
     } catch (error) {
       console.log(error.code);
+
+      setIsModalOpen(true);
+
       if (error.code === "auth/invalid-email") {
-        alert("올바른 이메일 형식이 아닙니다.");
+        setModalMessage("올바른 이메일 형식이 아닙니다.");
       } else if (error.code === "auth/wrong-password") {
-        alert("올바르지않은 비밀번호입니다.");
+        setModalMessage("올바르지않은 비밀번호입니다.");
       } else if (error.code === "auth/user-not-found") {
-        alert("가입되지 않은 사용자 입니다.");
+        setModalMessage("가입되지 않은 사용자 입니다.");
       } else if (error.code === "auth/missing-email") {
-        alert("이메일이 입력되지않았습니다.");
+        setModalMessage("이메일이 입력되지않았습니다.");
       } else {
-        alert("로그인이 실패하였습니다.");
+        setModalMessage("로그인이 실패하였습니다.");
       }
+      showModal();
     }
   };
+  const onFinishFailed = errorInfo => {
+    console.log("Failed:", errorInfo);
+  };
+  //Modal 기능
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="p-6 m-auto mt-5 shadow rounded-md bg-white flex flex-col">
       <h2>Login</h2>
-      {/* 
-      1.emotion을 활용하여 tag의 용도를 구분한다.
-      2. css도 함께 적용한다.
-       */}
-      {/* 여기는 이렇게 하고 안에는 */}
-      <LoginDiv>
-        <form>
-          <label htmlFor="">이메일</label>
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-          <label htmlFor="">비밀번호</label>
-          <input
-            type="password"
-            required
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            minLength={8}
-            maxLength={16}
-          />
+      {/* AntD Modal */}
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <p>{modalMessage}</p>
+      </Modal>
+      {/* AntD form  */}
+      <Form
+        name="basic"
+        labelCol={{
+          span: 3,
+        }}
+        wrapperCol={{
+          span: 16,
+        }}
+        style={{
+          maxWidth: 1280,
+          margin: "0 auto",
+        }}
+        initialValues={{
+          remember: false,
+        }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="on"
+      >
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[
+            {
+              type: "email",
 
-          <div className="flex justify-center gap-5 w-full">
-            <button
-              className="border rounded px-3 py-2 shadow"
-              onClick={e => handleLogin(e)}
-            >
-              로그인
-            </button>
-            <button
-              className="border rounded px-3 py-2 shadow "
-              onClick={e => {
-                e.preventDefault();
-                navigate("/signup");
-              }}
-            >
-              회원가입
-            </button>
-            <button
-              className="border rounded px-3 py-2 shadow"
-              onClick={e => {
-                e.preventDefault();
-                console.log("비밀번호 찾기");
-              }}
-            >
-              비밀번호 찾기
-            </button>
+              required: true,
+              message: "이메일을 입력해주세요",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "비밀번호를 입력해주세요",
+              validator: async (_, password) => {
+                if (!password || password.length < 6) {
+                  return Promise.reject(new Error("At least 6 passengers"));
+                }
+              },
+            },
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item
+          name="remember"
+          valuePropName="checked"
+          wrapperCol={{
+            offset: 8,
+            span: 16,
+          }}
+        >
+          <Checkbox>Remember me</Checkbox>
+        </Form.Item>
+
+        <Form.Item
+          wrapperCol={{
+            offset: 8,
+            span: 16,
+          }}
+        >
+          <div>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+            <Button htmlType="button">Reset</Button>
+            <Button type="link" htmlType="button">
+              Fill form
+            </Button>
           </div>
-        </form>
-      </LoginDiv>
+        </Form.Item>
+      </Form>
     </div>
   );
 };

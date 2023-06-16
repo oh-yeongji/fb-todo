@@ -11,6 +11,7 @@ const SignUpDiv = styled.div`
     div {
       display: flex;
       justify-content: flex-start;
+    
       gap: 10px;
 
       label {
