@@ -64,7 +64,7 @@ const Login = ({ setFBName, setFBEmail, setFBUid }) => {
   };
 
   return (
-    <div className="p-6 m-auto mt-5 shadow rounded-md bg-white flex flex-col">
+    <div className="p-6 m-auto mt-5 shadow rounded-md bg-white">
       <h2>Login</h2>
       {/* AntD Modal */}
       <Modal

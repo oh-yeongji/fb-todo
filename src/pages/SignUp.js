@@ -53,43 +53,51 @@ const SignUp = () => {
        */}
       <SignUpDiv>
         <form className="shadow bg-white rounded-lg">
-          <label htmlFor="">닉네임</label>
-          <input
-            type="text"
-            required
-            value={nickName}
-            onChange={e => setNickName(e.target.value)}
-            minLength={2}
-            maxLength={10}
-          />
-          <label htmlFor="">이메일</label>
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-          <label htmlFor="">비밀번호</label>
-          <input
-            type="password"
-            autoComplete="off"
-            value={pw}
-            onChange={e => setPw(e.target.value)}
-            required
-            minLength={8}
-            maxLength={16}
-          />
-          <label htmlFor="">비밀번호 확인</label>
-          <input
-            type="password"
-            value={pwConfirm}
-            onChange={e => {
-              setPwConfirm(e.target.value);
-            }}
-            required
-            minLength={8}
-            maxLength={16}
-          />
+          <div>
+            <label htmlFor="">닉네임</label>
+            <input
+              type="text"
+              required
+              value={nickName}
+              onChange={e => setNickName(e.target.value)}
+              minLength={2}
+              maxLength={10}
+            />
+          </div>
+          <div>
+            <label htmlFor="">이메일</label>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="">비밀번호</label>
+            <input
+              type="password"
+              autoComplete="off"
+              value={pw}
+              onChange={e => setPw(e.target.value)}
+              required
+              minLength={8}
+              maxLength={16}
+            />
+          </div>
+          <div>
+            <label htmlFor="">비밀번호 확인</label>
+            <input
+              type="password"
+              value={pwConfirm}
+              onChange={e => {
+                setPwConfirm(e.target.value);
+              }}
+              required
+              minLength={8}
+              maxLength={16}
+            />
+          </div>
           <div className="btn-list flex justify-center gap-5 w-full">
             <button
               className="border rounded px-3 py-2 shadow"

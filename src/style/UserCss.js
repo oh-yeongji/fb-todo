@@ -3,15 +3,15 @@ import styled from "@emotion/styled";
 const SignUpDiv = styled.div`
   form {
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
+    // flex-wrap: wrap;
+     flex-direction: column;
     width: 80%;
     margin: 0 auto;
     gap: 10px 0;
     div {
       display: flex;
       justify-content: flex-start;
-    
+
       gap: 10px;
 
       label {
@@ -59,6 +59,7 @@ export const LoginDiv = styled.div`
     display: flex;
     flex-wrap: wrap;
     width: 80%;
+
     margin: 0 auto;
     gap: 10px 0;
 

@@ -17,12 +17,15 @@ const Header = ({
     firebase.auth().signOut();
     console.log("로그아웃");
 
+    //로그아웃 하고나면 들어있던 정보를변견하는것을 빈 문자열로 호출
+    //그리고 홈으로 이동
     setFBName("");
     setFBEmail("");
     setFBUid("");
     navigator("/");
-  };
+  }
   return (
+    // component Header가 아님 html header임(말하자면)
     <header className="p-7 bg-black">
       <div className="flex align-items-center justify-between">
         <Link to="/" className="text-white hover:text-orange-600">
@@ -40,6 +43,7 @@ const Header = ({
             </Link>
           </li>
           <li>
+            {/* fbUid가 맞으면 todo 아니면 login으로 가라 */}
             <Link
               to={fbUid ? "/todo" : "/login"}
               className="text-white hover:text-orange-600"
@@ -48,6 +52,7 @@ const Header = ({
             </Link>
           </li>
         </ul>
+
         <div className="flex justify-center gap-5">
           {fbUid ? (
             <div className="text-white">
@@ -59,18 +64,19 @@ const Header = ({
             </div>
           ) : (
             <>
-              <Link to="/login" className="text-white hover:text-orange-600">
+              <Link to="/login" className="text-white hover:text-blue-500">
                 로그인
               </Link>
-              <Link to="/signup" className="text-white hover:text-orange-600">
+              <Link to="/signup" className="text-white hover:text-blue-500">
                 회원가입
               </Link>
             </>
           )}
         </div>
+
       </div>
     </header>
-  );
-};
+  )};
+
 
 export default Header;
