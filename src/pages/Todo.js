@@ -3,21 +3,22 @@ import React from "react";
 import List from "../components/List";
 import Form from "../components/Form";
 import { useNavigate } from "react-router-dom";
+import { getTodo, deleteAllTodo } from "../axios/axios";
 
 const Todo = ({ fbName, fbEmail, fbUid }) => {
   const navigator = useNavigate();
   // 백엔드반에 DB table 구성에 활용한다.
   //FB, MongDB에서는 Collection 구성에 활용한다.
   console.log(fbName, fbEmail);
-  // 로컬 데이터 state변수
-  const initTodoData = localStorage.getItem("fbTodoData")
-    ? JSON.parse(localStorage.getItem("fbTodoData"))
-    : [];
+  //jsonServer 데이터 state변수
+  const initTodoData = [];
   const [todoData, setTodoData] = useState(initTodoData);
+
   const handleRemoveClick = () => {
     setTodoData([]);
     //로컬스토리지 초기화
-    localStorage.setItem("fbTodoData", JSON.stringify([]));
+    // localStorage.setItem("fbTodoData", JSON.stringify([]));
+    deleteAllTodo();
   };
 
   //uid 없는경우 로그인으로 바로보내기
@@ -28,8 +29,9 @@ const Todo = ({ fbName, fbEmail, fbUid }) => {
     }
   }, []);
 
+  //axios get 호출 fbtodolist 호출 자료받기
   useEffect(() => {
-    //axios get 호출 fbtodolist 호출
+    getTodo(setTodoData);
   }, []);
 
   //이벤트 핸들러
@@ -51,7 +53,12 @@ const Todo = ({ fbName, fbEmail, fbUid }) => {
         {/* 할일 목록 */}
         <List todoData={todoData} setTodoData={setTodoData} />
         {/* 할일 추가 */}
-        <Form todoData={todoData} setTodoData={setTodoData} />
+        <Form
+          todoData={todoData}
+          setTodoData={setTodoData}
+          fbName={fbName}
+          fbEmail={fbEmail}
+        />
       </div>
     </div>
   );

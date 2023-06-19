@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { postTodo } from "../axios/axios";
 
-const Form = ({ todoData, setTodoData }) => {
+const Form = ({ todoData, setTodoData, fbName, fbEmail }) => {
   // console.log("Form 랜더링");
+
   // 새로운 할일 state 변수
   const [value, setValue] = useState("");
 
@@ -20,25 +22,35 @@ const Form = ({ todoData, setTodoData }) => {
     if (value === " " || value === "  ") {
       alert("내용을 입력해주세요");
     }
-    const newTodo = { id: Date.now(), title: value, completed: false };
+    const newTodo = {
+      id: Date.now(),
+      title: value,
+      completed: false,
+      author: fbName,
+      email: fbEmail,
+    };
     //그리고state저장. 화면이 랜더링 된다.
     //todoData에 추가.
     //setTodoData함수에서 state를
     //갱신된 state를 즉시 가지고 오기 위해서는
     //set함수에 인자로
     //콜백함수를 전달.
-    setTodoData(prev => {
-      return [...prev, newTodo];
-    });
+    // setTodoData(prev => {
+    //   return [...prev, newTodo];
+    // });
 
-    // setTodoData([...todoData, newTodo]);
+    setTodoData([...todoData, newTodo]);
 
     //로컬스토리지 저장
-    localStorage.setItem("fbTodoData", JSON.stringify([...todoData, newTodo]));
+    // localStorage.setItem("fbTodoData", JSON.stringify([...todoData, newTodo]));
     // axios post 호출 fbtodolist 추가하기
+
+    postTodo(newTodo);
+
     //입력창 초기화
     setValue("");
   };
+
   return (
     <div>
       <div>
