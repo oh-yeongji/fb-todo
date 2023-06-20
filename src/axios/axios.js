@@ -27,6 +27,7 @@ const getTodo = async (함수, 함수2) => {
     });
 
     함수(todosArr);
+    //데이터가 들어오면 보여줬다가 내용을 가리지않게 없어져야하니까
     함수2(false);
   } catch (error) {
     console.log(error);

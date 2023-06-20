@@ -23,7 +23,7 @@ const Header = ({
     setFBEmail("");
     setFBUid("");
     navigator("/");
-  }
+  };
   return (
     // component Header가 아님 html header임(말하자면)
     <header className="p-7 bg-black">
@@ -42,6 +42,7 @@ const Header = ({
               About
             </Link>
           </li>
+
           <li>
             {/* fbUid가 맞으면 todo 아니면 login으로 가라 */}
             <Link
@@ -49,6 +50,11 @@ const Header = ({
               className="text-white hover:text-orange-600"
             >
               Todo
+            </Link>
+          </li>
+          <li>
+            <Link to="/schedule" className="text-white hover:text-orange-600">
+              Schedule
             </Link>
           </li>
         </ul>
@@ -73,10 +79,9 @@ const Header = ({
             </>
           )}
         </div>
-
       </div>
     </header>
-  )};
-
+  );
+};
 
 export default Header;
