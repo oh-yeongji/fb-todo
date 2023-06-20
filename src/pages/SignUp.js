@@ -47,10 +47,12 @@ const SignUp = () => {
   return (
     <div className="p-6 m-5 shadow rounded bg-white flex flex-col">
       <h2>Sign Up</h2>
+      
       {/*
        * emotion 을 활용하여 tag 의 용도를 구분한다
        * css 도 함께 적용한다
        */}
+
       <SignUpDiv>
         <form className="shadow bg-white rounded-lg">
           <div>

@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
 });
 
 //Todo Get 기능
-const getTodo = async setTodoData => {
+const getTodo = async (함수, 함수2) => {
   try {
     const res = await axiosInstance.get("/todos");
     const result = res.data;
@@ -26,9 +26,11 @@ const getTodo = async setTodoData => {
       return item;
     });
 
-    setTodoData(todosArr);
+    함수(todosArr);
+    함수2(false);
   } catch (error) {
     console.log(error);
+    함수2(false);
   }
 };
 //Todo Post 기능
@@ -85,7 +87,7 @@ const deleteAllTodo = async () => {
     const res = await axiosInstance.get("/todos");
     const result = res.data;
     //문제는 "true","false"문자열로 들어옴
-   
+
     result.forEach(item => {
       deleteTodo(item.id);
     });
