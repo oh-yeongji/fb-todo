@@ -57,6 +57,11 @@ const Header = ({
               Schedule
             </Link>
           </li>
+          <li>
+            <Link to="/upload" className="text-white hover:text-orange-600">
+              Upload
+            </Link>
+          </li>
         </ul>
 
         <div className="flex justify-center gap-5">

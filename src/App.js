@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import { useState } from "react";
 import Schedule from "./pages/Schedule";
+import Upload from "./pages/Upload";
 
 function App() {
   // console.log("App 랜더링");
@@ -64,7 +65,8 @@ function App() {
               />
             }
           ></Route>
-          <Route path="schedule" element={<Schedule />}/>
+          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/upload" element={<Upload />} />
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </div>
