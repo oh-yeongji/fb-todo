@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import { useState } from "react";
 import Schedule from "./pages/Schedule";
 import Upload from "./pages/Upload";
+import TodoChart from "./pages/TodoChart";
 
 function App() {
   // console.log("App 랜더링");
@@ -68,6 +69,7 @@ function App() {
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/upload" element={<Upload />} />
           <Route path="*" element={<NotFound />}></Route>
+          <Route path="/todochart" element={<TodoChart />}></Route>
         </Routes>
       </div>
     </div>

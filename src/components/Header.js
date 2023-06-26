@@ -62,6 +62,11 @@ const Header = ({
               Upload
             </Link>
           </li>
+          <li>
+            <Link to="/todochart" className="text-white hover:text-orange-600">
+              Chart
+            </Link>
+          </li>
         </ul>
 
         <div className="flex justify-center gap-5">

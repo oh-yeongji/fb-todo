@@ -21,3 +21,5 @@ const List = ({ todoData, setTodoData }) => {
 };
 //리랜더링 최적화를 위한 코드
 export default React.memo(List);
+
+
