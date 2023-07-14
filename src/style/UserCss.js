@@ -14,12 +14,12 @@ const SignUpDiv = styled.div`
       gap: 10px;
 
       label {
-        display: block;
+        display: inline-block;
         width: 25%;
         font-weight: 700;
       }
       input {
-        display: block;
+        display: inline-block;
         width: 60%;
         border: 1px solid #ddd;
       }
