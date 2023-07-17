@@ -1,28 +1,26 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import firebase from "../firebase";
+import { Link } from "react-router-dom";
 
-const Header = ({
-  fbName,
-  fbEmail,
-  fbUid,
-  setFBName,
-  setFBEmail,
-  setFBUid,
-}) => {
-  fbName, fbEmail, fbUid, setFBName, setFBEmail, setFBUid;
-  const navigator = useNavigate();
+
+import { useLogout } from "../hooks/useLogout";
+import { useAuthContext } from "../hooks/useAuthContext";
+const Header = ({ fbName, fbEmail, fbUid }) => {
+  //AuthContext로그아웃 실행으로 상태변경
+  const { logout } = useLogout();
+  const { user } = useAuthContext();
+  // const navigator = useNavigate();
   //fb 로그아웃
   const handleLogout = () => {
-    firebase.auth().signOut();
-    console.log("로그아웃");
+    logout();
+    // firebase.auth().signOut();
+    // console.log("로그아웃");
 
-    //로그아웃 하고나면 들어있던 정보를변견하는것을 빈 문자열로 호출
-    //그리고 홈으로 이동
-    setFBName("");
-    setFBEmail("");
-    setFBUid("");
-    navigator("/");
+    // //로그아웃 하고나면 들어있던 정보를변경하는것을 빈 문자열로 호출
+    // //그리고 홈으로 이동
+    // setFBName("");
+    // setFBEmail("");
+    // setFBUid("");
+    // navigator("/");
   };
   return (
     // component Header가 아님 html header임(말하자면)
@@ -70,7 +68,14 @@ const Header = ({
         </ul>
 
         <div className="flex justify-center gap-5">
-          {fbUid ? (
+          <button
+            onClick={handleLogout}
+            className="text-white hover:text-orange-600"
+          >
+            로그아웃
+          </button>
+
+          {user ? (
             <div className="text-white">
               {fbName}
               {fbEmail}
