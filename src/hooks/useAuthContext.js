@@ -8,5 +8,6 @@ import { AuthContext } from "../context/AuthContext";
 //가져오는 커스텀 훅 정의
 export const useAuthContext = () => {
   const context = useContext(AuthContext);
+  
   return context; //state,dispatch가 담겨있음.
 };

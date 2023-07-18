@@ -1,13 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-
 import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
-const Header = ({ fbName, fbEmail, fbUid }) => {
+const Header = () => {
   //AuthContext로그아웃 실행으로 상태변경
   const { logout } = useLogout();
   const { user } = useAuthContext();
+  console.log("============");
+  console.log(user);
   // const navigator = useNavigate();
   //fb 로그아웃
   const handleLogout = () => {
@@ -44,7 +45,7 @@ const Header = ({ fbName, fbEmail, fbUid }) => {
           <li>
             {/* fbUid가 맞으면 todo 아니면 login으로 가라 */}
             <Link
-              to={fbUid ? "/todo" : "/login"}
+              to={user ? "/todo" : "/login"}
               className="text-white hover:text-orange-600"
             >
               Todo
@@ -68,18 +69,11 @@ const Header = ({ fbName, fbEmail, fbUid }) => {
         </ul>
 
         <div className="flex justify-center gap-5">
-          <button
-            onClick={handleLogout}
-            className="text-white hover:text-orange-600"
-          >
-            로그아웃
-          </button>
-
           {user ? (
             <div className="text-white">
-              {fbName}
-              {fbEmail}
-              {fbUid}
+              {user.displayName}
+              {user.email}
+              {user.uid}
               <button onClick={handleLogout}>로그아웃</button>
               <Link to="/mypage">마이페이지</Link>
             </div>

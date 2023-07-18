@@ -11,7 +11,7 @@ const Todo = ({ fbName, fbEmail, fbUid }) => {
 
   //로딩처리
   const [isLoading, setIsLoading] = useState(true);
-  
+
   // 백엔드반에 DB table 구성에 활용한다.
   //FB, MongDB에서는 Collection 구성에 활용한다.
   console.log(fbName, fbEmail);
@@ -29,9 +29,10 @@ const Todo = ({ fbName, fbEmail, fbUid }) => {
   //uid 없는경우 로그인으로 바로보내기
   useEffect(() => {
     // if (fbUid == "") {
-    if (!fbUid) {
-      navigator("/login");
-    }
+    
+    // if (!fbUid) {
+    //   navigator("/login");
+    // }
   }, []);
 
   //axios get 호출 fbtodolist 호출 자료받기
