@@ -36,6 +36,10 @@ const authReducer = (state, action) => {
     case "deleteUser":
       return { ...state, user: null };
 
+    case "isError":
+      return { ...state, errMessage: action.payload };
+    //dispatch({type: "isError", payload: "비밀번호 오류 입니다."})
+
     default:
       //그대로(기본값) 돌려준다.
       return state;
@@ -50,6 +54,7 @@ const AuthContextProvider = ({ children }) => {
     //state를 뜯으면 user하나밖에 안남음.
     user: null, // 사용자 정보
     isAuthReady: false, //로그인 상태 체크
+    errMessage: "", // 에러 메시지
   });
   //FB 인증 웹브라우저 새로 고침 처리
   useEffect(() => {

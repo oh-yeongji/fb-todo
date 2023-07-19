@@ -13,6 +13,7 @@ import Schedule from "./pages/Schedule";
 import Upload from "./pages/Upload";
 import TodoChart from "./pages/TodoChart";
 import { useAuthContext } from "./hooks/useFirebase";
+import { Modal } from "antd";
 
 function App() {
   // console.log("App 랜더링");
@@ -21,7 +22,17 @@ function App() {
   const [fbEmail, setFBEmail] = useState("");
   const [fbUid, setFBUid] = useState("");
 
-  const { isAuthReady, user } = useAuthContext(); //user의 유무에 따라 화면결과 다름.
+  const { isAuthReady, user, errMessage, dispatch } = useAuthContext();
+
+  //error메시지 모달 관련
+  const [isModalOpen, setIsModalOpen] = useState(true);
+
+  const handleOk = () => {
+    dispatch({ type: "isError", payload: "" });
+  };
+  const handleCancel = () => {
+    dispatch({ type: "isError", payload: "" });
+  };
 
   return (
     <>
@@ -62,6 +73,17 @@ function App() {
               <Route path="/todochart" element={<TodoChart />}></Route>
             </Routes>
           </div>
+          {/* 모달창 */}
+          {errMessage && (
+            <Modal
+              title="Basic Modal"
+              open={isModalOpen}
+              onOk={handleOk}
+              onCancel={handleCancel}
+            >
+              <div>{errMessage}</div>
+            </Modal>
+          )}
         </div>
       ) : (
         "Loading..."
