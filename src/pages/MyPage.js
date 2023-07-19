@@ -1,87 +1,91 @@
 import React, { useEffect, useState } from "react";
 import MyPageDiv from "../style/UserCss";
 import { useNavigate } from "react-router-dom";
-import firebase from "../firebase";
-// firebase 연동
-// import firebase from "../firebase";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useUpdateNickName } from "../hooks/useUpdateNickName";
+import { useUpdateEmail } from "../hooks/useUpdateEmail";
+import { useUpdatePass } from "../hooks/useUpdatePass";
+import { useUserDelete } from "../hooks/useUserDelete";
 
-const MyPage = ({
-  fbName,
-  fbEmail,
-  fbUid,
-  setFBEmail,
-  setFBName,
-  setFBUid,
-}) => {
+const MyPage = () => {
+  const { user } = useAuthContext();
+  const { updateNickName } = useUpdateNickName();
+  const { updateMail } = useUpdateEmail();
+  const { userDelete } = useUserDelete();
+  const { updatePass } = useUpdatePass();
+
   const navigate = useNavigate();
 
-  const [nickName, setNickName] = useState(fbName);
-  const [email, setEmail] = useState(fbEmail);
-  const [pw, setPw] = useState("");
+  const [nickName, setNickName] = useState("");
+  const [email, setEmail] = useState("");
   const [pwConfirm, setPwConfirm] = useState("");
+  const [pw, setPw] = useState("");
 
+  //AuthContext 에 state의 user를 출력
   useEffect(() => {
-    // if (!fbUid) {
-    //   navigate("/");
-    // }
+    setNickName(user.displayName);
+    setEmail(user.email);
   }, []);
-  //FB의 사용자정보 객체
-  const user = firebase.auth().currentUser;
 
   const handlerNickName = async e => {
     e.preventDefault();
-    try {
-      await user.updateProfile({
-        displayName: nickName,
-      });
-      setFBName(nickName);
-      setNickName(nickName);
-      alert("닉네임 정보를 변경하였습니다.");
-    } catch (error) {
-      console.log(error.code);
-    }
+    updateNickName(nickName);
+    // try {
+    //   await user.updateProfile({
+    //     displayName: nickName,
+    //   });
+    //   setFBName(nickName);
+    //   setNickName(nickName);
+    //   alert("닉네임 정보를 변경하였습니다.");
+    // } catch (error) {
+    //   console.log(error.code);
+    // }
   };
   const handlerEmail = async e => {
     e.preventDefault();
-    try {
-      await user.updateEmail(email);
-      setFBEmail(email);
-      setEmail(email);
-      alert("이메일 정보를 변경하였습니다.");
-    } catch (error) {
-      if (error.code == "auth/email-already-in-use") {
-        alert("The email address is already in use");
-      } else if (error.code == "auth/invalid-email") {
-        alert("The email address is not valid.");
-      }
-    }
+    updateMail(email);
+    // try {
+    //   await user.updateEmail(email);
+    //   setFBEmail(email);
+    //   setEmail(email);
+    //   alert("이메일 정보를 변경하였습니다.");
+    // } catch (error) {
+    //   if (error.code == "auth/email-already-in-use") {
+    //     alert("The email address is already in use");
+    //   } else if (error.code == "auth/invalid-email") {
+    //     alert("The email address is not valid.");
+    //   }
+    // }
   };
   const handlerPassword = async e => {
     e.preventDefault();
-    try {
-      await user.updatePassword(pw);
-      alert("비밀번호를 변경하였습니다.");
-    } catch (error) {
-      if (error.code == "auth/email-already-in-use") {
-        alert("The password is too weak");
-      } else {
-        alert("비밀번호 다시 입력해주세요");
-      }
-    }
+
+    updatePass(pw);
+    // try {
+    //   await user.updatePassword(pw);
+    //   alert("비밀번호를 변경하였습니다.");
+    // } catch (error) {
+    //   if (error.code == "auth/email-already-in-use") {
+    //     alert("The password is too weak");
+    //   } else {
+    //     alert("비밀번호 다시 입력해주세요");
+    //   }
+    // }
     console.log("패스워드 업데이트");
   };
   const handlerDelete = async e => {
     e.preventDefault();
-    try {
-      await user.delete();
-      alert("서비스 탈퇴하셨습니다");
-      setFBEmail("");
-      setFBName("");
-      setFBUid("");
-      navigate("/");
-    } catch (error) {
-      console.log(error.code);
-    }
+    userDelete();
+    // try {
+    //   await user.delete();
+    //   alert("서비스 탈퇴하셨습니다");
+    //   setFBEmail("");
+    //   setFBName("");
+    //   setFBUid("");
+    //   navigate("/");
+    // } catch (error) {
+    //   console.log(error.code);
+    // }
   };
   return (
     <div className="p-6 m-5 shadow rounded bg-white flex flex-col">

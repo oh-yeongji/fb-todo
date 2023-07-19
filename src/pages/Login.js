@@ -13,12 +13,10 @@ const Login = () => {
   //로그인
 
   const onFinish = values => {
-    console.log("Success:", values);
-    try {
-      login(values.email, values.password);
-    } catch (err) {
-      console.log(err);
-    }
+    // console.log("Success:", values);
+
+    login(values.email, values.password);
+
     //firebase 로그인 시도
     // try {
     //   //values 이 부분은 원래는 state

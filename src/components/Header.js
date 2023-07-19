@@ -7,7 +7,7 @@ const Header = () => {
   //AuthContext로그아웃 실행으로 상태변경
   const { logout } = useLogout();
   const { user } = useAuthContext();
-  console.log("============");
+  // console.log("============");
   console.log(user);
   // const navigator = useNavigate();
   //fb 로그아웃

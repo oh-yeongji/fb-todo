@@ -31,10 +31,10 @@ export const useSignup = () => {
         password,
       );
       const user = userCredential.user;
-      console.log(user);
+      // console.log(user);
       if (!user) {
         // 에러 객체를 던진다.
-        console.log("회원 가입에 실패하였습니다.");
+        // console.log("회원 가입에 실패하였습니다.");
         return;
       }
       // 성공시에는 사용자 닉네임을 설정한다.
@@ -42,7 +42,7 @@ export const useSignup = () => {
         displayName: displayName,
         //   photoURL: "https://example.com/jane-q-user/profile.jpg",
       });
-      console.log("dispatch실행=====");
+      // console.log("dispatch실행=====");
       dispatch({ type: "login", payload: "user" });
       // 에러 없음
       setError(null);

@@ -12,7 +12,7 @@ const AuthContext = createContext(); //전역변수를 만들어서 상태관리
 //원본(state)를 훼손하지않고 원하는 데이터 처리 후
 // 원본(state)를 변경한다. (불변성 유지)
 const authReducer = (state, action) => {
-  console.log("리듀서함수: ", action); // {type:"login",payload:""}
+  // console.log("리듀서함수: ", action); // {type:"login",payload:""}
 
   //action 은 반드시 형태가 {type:"구분자"}
   //  {type:"입금",payload:1000}   //입금과 출금에는 데이터를 바꾸기위한 payload가 있지만 잔고는 데이터 변경할 필요가 없기 때문에 payload할 필요 없음.
@@ -26,6 +26,15 @@ const authReducer = (state, action) => {
 
     case "isAuthReady":
       return { ...state, user: action.payload, isAuthReady: true };
+
+    case "updateName":
+      return { ...state, user: action.payload };
+
+    case "updateEmail":
+      return { ...state, user: action.payload };
+
+    case "deleteUser":
+      return { ...state, user: null };
 
     default:
       //그대로(기본값) 돌려준다.
@@ -45,10 +54,9 @@ const AuthContextProvider = ({ children }) => {
   //FB 인증 웹브라우저 새로 고침 처리
   useEffect(() => {
     onAuthStateChanged(appAuth, user => {
-    
       //로그인이 되었는지 아닌지를 파악한다.
       // AuthContext 에 User 정보를 입력한다.
-      console.log("onAuthStateChanged: ", user);
+      // console.log("onAuthStateChanged: ", user);
       dispatch({ type: "isAuthReady", payload: user }); //괄호안에 다 action
     });
   }, []);
