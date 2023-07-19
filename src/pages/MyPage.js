@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import MyPageDiv from "../style/UserCss";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../hooks/useAuthContext";
-import { useUpdateNickName } from "../hooks/useUpdateNickName";
-import { useUpdateEmail } from "../hooks/useUpdateEmail";
-import { useUpdatePass } from "../hooks/useUpdatePass";
-import { useUserDelete } from "../hooks/useUserDelete";
+import {
+  useAuthContext,
+  useUpdateNickName,
+  useUpdateEmail,
+  useUpdatePass,
+  useUserDelete,
+} from "../hooks/useFirebase";
 
 const MyPage = () => {
   const { user } = useAuthContext();

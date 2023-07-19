@@ -12,7 +12,7 @@ import { useState } from "react";
 import Schedule from "./pages/Schedule";
 import Upload from "./pages/Upload";
 import TodoChart from "./pages/TodoChart";
-import { useAuthContext } from "./hooks/useAuthContext";
+import { useAuthContext } from "./hooks/useFirebase";
 
 function App() {
   // console.log("App 랜더링");
