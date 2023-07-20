@@ -12,12 +12,6 @@ const AuthContext = createContext(); //전역변수를 만들어서 상태관리
 //원본(state)를 훼손하지않고 원하는 데이터 처리 후
 // 원본(state)를 변경한다. (불변성 유지)
 const authReducer = (state, action) => {
-  // console.log("리듀서함수: ", action); // {type:"login",payload:""}
-
-  //action 은 반드시 형태가 {type:"구분자"}
-  //  {type:"입금",payload:1000}   //입금과 출금에는 데이터를 바꾸기위한 payload가 있지만 잔고는 데이터 변경할 필요가 없기 때문에 payload할 필요 없음.
-  //  {type:"출금",payload:1000}   //type은 필수고 payload는 필수아닐수있음.
-  //  {type:"잔고"}
   switch (action.type) {
     case "login":
       return { ...state, user: action.payload, isAuthReady: true }; //
@@ -70,6 +64,7 @@ const AuthContextProvider = ({ children }) => {
     //value가 없으면 state랑 dispatch에 접근 못함.
     //뜯어준이유는 비교해야하니까 ...state랑 비교대상이랑
     <AuthContext.Provider value={{ ...state, dispatch }}>
+      {/*...state: user, isAuthReady,errMessage,dispatch */}
       {children}
       {/* index.js에서 App,Browser이 이자리로 들어온다? */}
     </AuthContext.Provider>

@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { patchTitleTodo, patchCompletedTodo, deleteTodo } from "../axios/axios";
+import { useFireStore } from "../hooks/useFireStore";
 
-const ListItem = ({ item, todoData, setTodoData }) => {
+const ListItem = ({ item }) => {
   // console.log("ListItem 랜더링", item);
+  const { deleteDocument, updateCompletedDocument } = useFireStore("todo");
   const [isEdit, setIsEdit] = useState(false);
   //편집 상태 타이틀 설정 state
   const [editTitle, setEditTitle] = useState(item.title);
-
-  useEffect(() => {
-    setEditTitle(item.title);
-  }, []);
 
   const getStyle = _completed => {
     return {
@@ -32,14 +30,14 @@ const ListItem = ({ item, todoData, setTodoData }) => {
   };
 
   const handleSaveClick = _id => {
-    let newTodoData = todoData.map(item => {
-      if (item.id === _id) {
-        item.title = editTitle;
-        item.completed = false;
-      }
-      return item;
-    });
-    setTodoData(newTodoData);
+    // let newTodoData = todoData.map(item => {
+    //   if (item.id === _id) {
+    //     item.title = editTitle;
+    //     item.completed = false;
+    //   }
+    //   return item;
+    // });
+    // setTodoData(newTodoData);
     // 로컬스토리지 저장
     // localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
     //axios delete 호출 fbtodolist 삭제하기
@@ -55,36 +53,38 @@ const ListItem = ({ item, todoData, setTodoData }) => {
     item.completed = false;
     setIsEdit(false); //편집이 끝남
   };
-
-  const handleDeleteClick = _id => {
-    //전달된 ID를 검색해서 목록에서 제거
-    //1. 전달된 ID로 해당하는 목록 찾아서 제외
-    //2. 새로운 목록으로 갱신해서 화면 리랜더링
-    //3. 배열의 고차함수 중 filter를 사용
-    const newTodoData = todoData.filter(item => item.id !== _id);
-    // 로컬스토리지 저장
-    // localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
-    //axios fetch 호출 fbtodolist 삭제하기
-    setTodoData(newTodoData);
-    deleteTodo(_id);
-  };
-
   const handleCompleteChange = _id => {
-    let newTodoData = todoData.map(item => {
-      if (item.id === _id) {
-        //completed를 갱신.
-        //true였던 걸 false로 false였던걸 true로
-        item.completed = !item.completed;
-      }
-      return item;
-    });
-    setTodoData(newTodoData);
+    updateCompletedDocument(_id, !item.completed);
+    // let newTodoData = todoData.map(item => {
+    //   if (item.id === _id) {
+    //     //completed를 갱신.
+    //     //true였던 걸 false로 false였던걸 true로
+    //     item.completed = !item.completed;
+    //   }
+    //   return item;
+    // });
+    // setTodoData(newTodoData);
     // 로컬스토리지 저장
     // localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
     //axios fetch/put 호출 fbtodolist 삭제하기
 
     console.log(_id, editTitle);
     patchCompletedTodo(_id, { ...item });
+  };
+
+  const handleDeleteClick = _id => {
+    console.log(_id);
+    deleteDocument(_id);
+    //전달된 ID를 검색해서 목록에서 제거
+    //1. 전달된 ID로 해당하는 목록 찾아서 제외
+    //2. 새로운 목록으로 갱신해서 화면 리랜더링
+    //3. 배열의 고차함수 중 filter를 사용
+    // const newTodoData = todoData.filter(item => item.id !== _id);
+    // 로컬스토리지 저장
+    // localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
+    //axios fetch 호출 fbtodolist 삭제하기
+    // setTodoData(newTodoData);
+    deleteTodo(_id);
   };
 
   if (isEdit) {

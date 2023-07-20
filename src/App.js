@@ -8,7 +8,7 @@ import Todo from "./pages/Todo";
 import About from "./pages/About";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Schedule from "./pages/Schedule";
 import Upload from "./pages/Upload";
 import TodoChart from "./pages/TodoChart";
@@ -24,7 +24,21 @@ function App() {
 
   const { isAuthReady, user, errMessage, dispatch } = useAuthContext();
 
-  //error메시지 모달 관련
+  //error message 모달 관련
+  const error = msg => {
+    Modal.error({
+      title: "This is a warning message",
+      content: msg,
+      onOk: handleOk,
+      okButtonProps: { style: { background: "red" } },
+    });
+  };
+  useEffect(() => {
+    if (errMessage !== "") {
+      error(errMessage);
+    }
+  }, [errMessage]);
+
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const handleOk = () => {
@@ -73,17 +87,6 @@ function App() {
               <Route path="/todochart" element={<TodoChart />}></Route>
             </Routes>
           </div>
-          {/* 모달창 */}
-          {errMessage && (
-            <Modal
-              title="Basic Modal"
-              open={isModalOpen}
-              onOk={handleOk}
-              onCancel={handleCancel}
-            >
-              <div>{errMessage}</div>
-            </Modal>
-          )}
         </div>
       ) : (
         "Loading..."

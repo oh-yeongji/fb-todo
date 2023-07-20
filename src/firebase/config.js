@@ -7,7 +7,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 //데이터 베이스
-import { getFirestore } from "firebase/firestore";
+import { Timestamp, getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -26,6 +26,6 @@ const app = initializeApp(firebaseConfig);
 const appAuth = getAuth(app);
 //데이터베이스
 const appFireStore = getFirestore(app);
-
+const timestamp = Timestamp;
 //외부에서
-export { appAuth, appFireStore };
+export { appAuth, appFireStore, timestamp };
