@@ -1,4 +1,10 @@
-import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { useReducer } from "react";
 import { appFireStore, timestamp } from "../firebase/config";
 
@@ -24,7 +30,7 @@ const storeReducer = (state, action) => {
         error: null,
         success: true,
       };
-      case "deleteDoc":
+    case "deleteDoc":
     case "updateCompleted":
       return {
         isPending: false,
@@ -76,14 +82,15 @@ export const useFireStore = transaction => {
   };
 
   //completed 업데이트
-  const updateCompletedDocument = async(id, flag) => {};
-  dispatch({ type: "isPending" });
-  try {
-      const docRef = await updateDoc(doc(colRef,id),{completed:flag});
-      dispatch({type:"updateCompleted",payload:docRef})
-  } catch (err) {
-    console.log(err.message);
-  }
+  const updateCompletedDocument = async (id, flag) => {
+    dispatch({ type: "isPending" });
+    try {
+      const docRef = await updateDoc(doc(colRef.id), { completed: flag });
+      dispatch({ type: "updateCompleted", payload: docRef });
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
   //외부호출
   return { addDocument, deleteDocument, updateCompletedDocument, response };
