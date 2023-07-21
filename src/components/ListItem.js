@@ -4,7 +4,8 @@ import { useFireStore } from "../hooks/useFireStore";
 
 const ListItem = ({ item }) => {
   // console.log("ListItem 랜더링", item);
-  const { deleteDocument, updateCompletedDocument } = useFireStore("todo");
+  const { deleteDocument, updateCompletedDocument, updateTitleDocument } =
+    useFireStore("todo");
   const [isEdit, setIsEdit] = useState(false);
   //편집 상태 타이틀 설정 state
   const [editTitle, setEditTitle] = useState(item.title);
@@ -30,6 +31,7 @@ const ListItem = ({ item }) => {
   };
 
   const handleSaveClick = _id => {
+    updateTitleDocument(_id, editTitle);
     // let newTodoData = todoData.map(item => {
     //   if (item.id === _id) {
     //     item.title = editTitle;
@@ -54,6 +56,8 @@ const ListItem = ({ item }) => {
     setIsEdit(false); //편집이 끝남
   };
   const handleCompleteChange = _id => {
+    //FB의 fireStore에서 id를 참조 전달
+    //FB의 firebase에서 completed를 반대로 !(Not 연산자 )
     updateCompletedDocument(_id, !item.completed);
     // let newTodoData = todoData.map(item => {
     //   if (item.id === _id) {
@@ -84,7 +88,7 @@ const ListItem = ({ item }) => {
     // localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
     //axios fetch 호출 fbtodolist 삭제하기
     // setTodoData(newTodoData);
-    deleteTodo(_id);
+    // deleteTodo(_id);
   };
 
   if (isEdit) {
