@@ -38,7 +38,7 @@ export const useLogin = () => {
       );
       const user = userCredential.user; // ?
       dispatch({ type: "login", payload: user });
-      navigate("/");
+      navigate("/about");
     } catch (err) {
       console.log(err.message);
       let errMessage = "";
@@ -147,7 +147,7 @@ export const useSignup = () => {
   return { error, isPending, signUp };
 };
 
-//회원이메일 변경 Hook
+//회원이메일 변경
 export const useUpdateEmail = () => {
   const { dispatch } = useAuthContext();
   const [error, setError] = useState(null);
@@ -194,7 +194,7 @@ export const useUpdateNickName = () => {
       //FB의 닉네임 변경 API 사용
       await updateProfile(appAuth.currentUser, {
         displayName: displayName,
-        // photoURL: "https://example.com/jane-q-user/profile.jpg",
+        photoURL: "https://example.com/jane-q-user/profile.jpg",
       });
 
       //Context의 state 변경
@@ -218,7 +218,7 @@ export const useUpdatePass = () => {
     setIsPending(true);
     try {
       await updatePassword(appAuth.currentUser, newPass);
-      console.log("비밀번호 업데이트 완료");
+      //console.log("비밀번호 업데이트 완료");
       setIsPending(false);
     } catch (err) {
       console.log(err.message);

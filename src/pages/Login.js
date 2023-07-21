@@ -49,7 +49,7 @@ const Login = () => {
     // }
   };
   const onFinishFailed = errorInfo => {
-    console.log("Failed:", errorInfo);
+    //console.log("Failed:", errorInfo);
   };
   //Modal 기능
   const [isModalOpen, setIsModalOpen] = useState(false);

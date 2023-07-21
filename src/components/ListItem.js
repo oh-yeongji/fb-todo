@@ -43,7 +43,7 @@ const ListItem = ({ item }) => {
     // 로컬스토리지 저장
     // localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
     //axios delete 호출 fbtodolist 삭제하기
-    console.log(_id, editTitle);
+    //console.log(_id, editTitle);
 
     //     axiosInstance
     //       .patch(`/todos/${_id}`, { title: editTitle })
@@ -72,12 +72,12 @@ const ListItem = ({ item }) => {
     // localStorage.setItem("fbTodoData", JSON.stringify(newTodoData));
     //axios fetch/put 호출 fbtodolist 삭제하기
 
-    console.log(_id, editTitle);
+    //console.log(_id, editTitle);
     patchCompletedTodo(_id, { ...item });
   };
 
   const handleDeleteClick = _id => {
-    console.log(_id);
+    //console.log(_id);
     deleteDocument(_id);
     //전달된 ID를 검색해서 목록에서 제거
     //1. 전달된 ID로 해당하는 목록 찾아서 제외

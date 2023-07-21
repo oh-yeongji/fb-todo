@@ -17,6 +17,16 @@ import { Modal } from "antd";
 
 function App() {
   // console.log("App 랜더링");
+  // 등록된 앱의 JavaScriipt Key
+  const jsKey = process.env.REACT_APP_KAKAO;
+  //로그인 SDK는 한번만 초기화
+  //중복 초기화 방지 코드
+  if (!window.Kakao.isInitialized()) {
+    // JavaScript key를 인자로 주고 SDK 초기화
+    window.Kakao.init(jsKey);
+    // SDK 초기화 여부를 확인하자.
+    console.log(window.Kakao.isInitialized());
+  }
   //추후에 Redux/Recoil state 로 관리 필요
   const [fbName, setFBName] = useState("");
   const [fbEmail, setFBEmail] = useState("");

@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { appFireStore } from "../firebase/config";
 
 export const useCollection = (transaction, userQuery) => {
-  console.log("userQuery", userQuery);
+  //console.log("userQuery", userQuery);
   //문서들을 관리할 state
   const [documents, setDocuments] = useState(null);
   //에러를 관리할 state
@@ -38,7 +38,7 @@ export const useCollection = (transaction, userQuery) => {
           //이용하면 내용을 뜯을수있다.
           result.push({ ...item.data(), id: item.id });
         });
-        console.log("결과:", result);
+        //console.log("결과:", result);
         setDocuments(result);
         setError(null);
       },

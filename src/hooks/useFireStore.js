@@ -62,8 +62,8 @@ export const useFireStore = transaction => {
       const createTime = timestamp.fromDate(new Date());
       //doc는  {title: "내용" , completed:false,createTime:false }
       const docRef = await addDoc(colRef, { ...doc, createTime: createTime });
-      console.log("문서추가 실행");
-      console.log(docRef);
+      //console.log("문서추가 실행");
+      //console.log(docRef);
       dispatch({ type: "addDoc", payload: docRef });
     } catch (err) {
       console.log(err.message);
@@ -74,7 +74,7 @@ export const useFireStore = transaction => {
     dispatch({ type: "isPending" });
     try {
       const docRef = await deleteDoc(doc(colRef, id));
-      console.log("삭제했어요");
+      //console.log("삭제했어요");
 
       dispatch({ type: "deleteDoc", payload: docRef });
     } catch (err) {

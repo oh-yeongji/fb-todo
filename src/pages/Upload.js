@@ -216,7 +216,7 @@ const UploadAxios = () => {
         // console.log("전송완료 : ", res);
         // 서버가 정상적으로 업데이트 되고 나서 URL 줄때
         const serverStatus = res.status.toString();
-        console.log(serverStatus.charAt(0));
+        //console.log(serverStatus.charAt(0));
         if (serverStatus.charAt(0) === "2") {
           setCharImg("서버의 이미지 주소 URL");
         } else {
@@ -224,7 +224,7 @@ const UploadAxios = () => {
           setCharImg(uploadImage);
         }
       } catch (error) {
-        console.log("데이터 전송 실패", error);
+       // console.log("데이터 전송 실패", error);
         // 데모 버전에서 프론트에서 처리
         setCharImg(uploadImage);
       }
@@ -446,7 +446,7 @@ const UploadMulti = () => {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    console.log("submit 실행으로 데이터 처리시작.");
+    //console.log("submit 실행으로 데이터 처리시작.");
 
     if (!previewImage) {
       alert("이미지를 선택해 주세요.");

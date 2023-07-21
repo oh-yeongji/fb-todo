@@ -15,8 +15,8 @@ const Todo = ({ fbName, fbEmail, fbUid }) => {
   const { user } = useAuthContext();
   //컬렉션 데이터 출력state
   const { documents, error } = useCollection("todo", ["uid", "==", user.uid]);
-  console.log("문서목록========");
-  console.log(documents);
+  //console.log("문서목록========");
+  //console.log(documents);
   const navigator = useNavigate();
 
   //로딩처리
@@ -24,7 +24,7 @@ const Todo = ({ fbName, fbEmail, fbUid }) => {
 
   // 백엔드반에 DB table 구성에 활용한다.
   //FB, MongDB에서는 Collection 구성에 활용한다.
-  console.log(fbName, fbEmail);
+ // console.log(fbName, fbEmail);
   //jsonServer 데이터 state변수
   // const initTodoData = [];
   //로컬 데이터 state변수

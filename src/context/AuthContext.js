@@ -33,7 +33,13 @@ const authReducer = (state, action) => {
     case "isError":
       return { ...state, errMessage: action.payload };
     //dispatch({type: "isError", payload: "비밀번호 오류 입니다."})
-
+    case "kakaoLogin":
+      console.log(action.payload);
+      return { ...state, KakaoProfile: action.payload };
+    case "KakaoLogout":
+      return { ...state, KakaoProfile: null };
+    case "KakaoOut":
+      return { ...state, KakaoProfile: null };
     default:
       //그대로(기본값) 돌려준다.
       return state;
@@ -49,6 +55,7 @@ const AuthContextProvider = ({ children }) => {
     user: null, // 사용자 정보
     isAuthReady: false, //로그인 상태 체크
     errMessage: "", // 에러 메시지
+    KakaoProfile: null,
   });
   //FB 인증 웹브라우저 새로 고침 처리
   useEffect(() => {
