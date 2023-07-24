@@ -55,7 +55,7 @@ const AuthContextProvider = ({ children }) => {
     user: null, // 사용자 정보
     isAuthReady: false, //로그인 상태 체크
     errMessage: "", // 에러 메시지
-    KakaoProfile: null,
+    KakaoProfile: null, //카카오 저장 정보
   });
   //FB 인증 웹브라우저 새로 고침 처리
   useEffect(() => {
