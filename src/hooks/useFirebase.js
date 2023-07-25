@@ -12,6 +12,14 @@ import {
 import { appAuth } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import {
+  FB_DELETE_USER,
+  FB_IS_ERROR,
+  FB_LOGIN,
+  FB_LOGOUT,
+  FB_UPDATE_EMAIL,
+  FB_UPDATE_NAME,
+} from "../modules/fbreducer";
 
 //AuthContext Hook
 // export const useAuthContext = () => {
@@ -39,7 +47,7 @@ export const useLogin = () => {
         password,
       );
       const user = userCredential.user; // ?
-      dispatch({ type: "login", payload: user });
+      dispatch({ type: FB_LOGIN, payload: user });
       navigate("/about");
     } catch (err) {
       console.log(err.message);
@@ -56,7 +64,7 @@ export const useLogin = () => {
         errMessage = "로그인이 실패하였습니다.";
       }
 
-      dispatch({ type: "isError", payload: errMessage });
+      dispatch({ type: FB_IS_ERROR, payload: errMessage });
     }
   };
   return { error, isPending, login };
@@ -75,7 +83,7 @@ export const useLogout = () => {
     try {
       //FB로그아웃API
       await signOut(appAuth);
-      dispatch({ type: "logout" });
+      dispatch({ type: FB_LOGOUT });
       navigate("/");
     } catch (err) {
       console.log(err.message);
@@ -88,7 +96,7 @@ export const useLogout = () => {
 export const useSignup = () => {
   //authContext 데이터 전달
   // const { dispatch } = useAuthContext();
-  const { dispatch } = useDispatch();
+  const dispatch = useDispatch();
 
   // 사용자 상태에 따라 웹브라우저 라우터 이동
   const navigate = useNavigate();
@@ -124,7 +132,7 @@ export const useSignup = () => {
         //   photoURL: "https://example.com/jane-q-user/profile.jpg",
       });
       // console.log("dispatch실행=====");
-      dispatch({ type: "login", payload: "user" });
+      dispatch({ type: FB_LOGIN, payload: "user" });
       // 에러 없음
       setError(null);
       // 연결 후 작업 완료
@@ -143,7 +151,7 @@ export const useSignup = () => {
       } else if (err.code == "auth/weak-password") {
         errMessage = "The password is too weak.";
       }
-      dispatch({ type: "isError", payload: errMessage });
+      dispatch({ type: FB_IS_ERROR, payload: errMessage });
     }
   };
 
@@ -165,7 +173,7 @@ export const useUpdateEmail = () => {
     try {
       await updateEmail(appAuth.currentUser, email);
       setIsPending(false);
-      dispatch({ type: "updateEmail", payload: appAuth.currentUser });
+      dispatch({ type: FB_UPDATE_EMAIL, payload: appAuth.currentUser });
     } catch (err) {
       console.log(err.message);
       setIsPending(false);
@@ -181,7 +189,7 @@ export const useUpdateEmail = () => {
       } else if (err.code == "auth/weak-password") {
         errMessage = "The password is too weak.";
       }
-      dispatch({ type: "isError", payload: errMessage });
+      dispatch({ type: FB_IS_ERROR, payload: errMessage });
     }
   };
   return { error, isPending, updateMail };
@@ -190,7 +198,7 @@ export const useUpdateEmail = () => {
 //회원 닉네임 변경 Hook
 export const useUpdateNickName = () => {
   // const { dispatch } = useAuthContext();
-  const { dispatch } = useDispatch();
+  const dispatch = useDispatch();
 
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
@@ -206,7 +214,7 @@ export const useUpdateNickName = () => {
       });
 
       //Context의 state 변경
-      dispatch({ type: "updateName", payload: appAuth.currentUser });
+      dispatch({ type: FB_UPDATE_NAME, payload: appAuth.currentUser });
     } catch (err) {
       console.log(err.message);
       setIsPending(false);
@@ -241,7 +249,7 @@ export const useUpdatePass = () => {
 export const useUserDelete = () => {
   const navigate = useNavigate();
   // const { dispatch } = useAuthContext();
-  const { dispatch } = useDispatch();
+  const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
 
@@ -251,7 +259,7 @@ export const useUserDelete = () => {
     try {
       await deleteUser(appAuth.currentUser);
       setIsPending(false);
-      dispatch({ type: "deleteUser" });
+      dispatch({ type: FB_DELETE_USER });
       navigate("/");
     } catch (err) {
       console.log(err.message);

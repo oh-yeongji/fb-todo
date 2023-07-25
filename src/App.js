@@ -17,6 +17,7 @@ import { Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { appAuth } from "./firebase/config";
+import { FB_IS_AUTHREADY, FB_IS_ERROR } from "./modules/fbreducer";
 
 function App() {
   // console.log("App 랜더링");
@@ -39,7 +40,7 @@ function App() {
       //로그인이 되었는지 아닌지를 파악한다.
       // AuthContext 에 User 정보를 입력한다.
       // console.log("onAuthStateChanged: ", user);
-      dispatch({ type: "isAuthReady", payload: user }); //괄호안에 다 action
+      dispatch({ type: FB_IS_AUTHREADY, payload: user }); //괄호안에 다 action
     });
   }, []);
 
@@ -61,11 +62,11 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   const handleOk = () => {
-    dispatch({ type: "isError", payload: "" });
+    dispatch({ type: FB_IS_ERROR, payload: "" });
   };
-  const handleCancel = () => {
-    dispatch({ type: "isError", payload: "" });
-  };
+  // const handleCancel = () => {
+  //   dispatch({ type: "isError", payload: "" });
+  // };
 
   return (
     <>

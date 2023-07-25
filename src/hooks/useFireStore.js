@@ -7,6 +7,8 @@ import {
 } from "firebase/firestore";
 import { useReducer } from "react";
 import { appFireStore, timestamp } from "../firebase/config";
+import { useDispatch } from "react-redux";
+
 
 //FB의 Store   CRUD HOOK
 
