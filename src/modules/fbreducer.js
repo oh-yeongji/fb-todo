@@ -12,7 +12,6 @@ export const initialState = {
   user: null, // 사용자 정보
   isAuthReady: false, //로그인 상태 체크
   errMessage: "", // 에러 메시지
-  KakaoProfile: null,
 };
 
 //FB 리듀서 정의
