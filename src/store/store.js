@@ -5,6 +5,7 @@ import fbAuthSlice from "../reducers/fbAuthSlice";
 const store = configureStore({
   reducer: {
     fbAuth: fbAuthSlice.reducer,
+
   },
 });
 //store.reducer는 1개만 가능 ,reducers아니고 reducer

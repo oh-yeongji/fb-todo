@@ -8,28 +8,19 @@ import Todo from "./pages/Todo";
 import About from "./pages/About";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Schedule from "./pages/Schedule";
 import Upload from "./pages/Upload";
 import TodoChart from "./pages/TodoChart";
-import { useAuthContext } from "./hooks/useFirebase";
 import { Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { appAuth } from "./firebase/config";
-import { FB_IS_AUTHREADY, FB_IS_ERROR } from "./modules/fbreducer";
+import { isAuthReadyFB, isErrorFB } from "./reducers/fbAuthSlice";
 
 function App() {
-  // console.log("App 랜더링");
-  //추후에 Redux/Recoil state 로 관리 필요
-  // const { isAuthReady, user, errMessage, dispatch } = useAuthContext();
-
-  // store에 저장된 state를 읽어온다.
-  // const isAuthReady = useSelector(state => state.isAuthReady);
-  // const user = useSelector(state => state.user);
-  // const errMessage = useSelector(state => state.errMessage);
-  // const KakaoProfile = useSelector(state => state.KakaoProfile);
-  const { isAuthReady, user, errMessage } = useSelector(state => state);
+  //Slice를 활용하였음.
+  const { isAuthReady, uid, errMessage } = useSelector(state => state.fbAuth);
 
   //2. store에 저장된 state를 업데이트(액션 만들어서 전달)
   const dispatch = useDispatch();
@@ -40,7 +31,14 @@ function App() {
       //로그인이 되었는지 아닌지를 파악한다.
       // AuthContext 에 User 정보를 입력한다.
       // console.log("onAuthStateChanged: ", user);
-      dispatch({ type: FB_IS_AUTHREADY, payload: user }); //괄호안에 다 action
+
+      dispatch(
+        isAuthReadyFB({
+          uid: user && user.uid,
+          email: user && user.email,
+          displayName: user && user.displayName,
+        }),
+      );
     });
   }, []);
 
@@ -59,14 +57,10 @@ function App() {
     }
   }, [errMessage]);
 
-  const [isModalOpen, setIsModalOpen] = useState(true);
-
   const handleOk = () => {
-    dispatch({ type: FB_IS_ERROR, payload: "" });
+    // dispatch({ type: FB_IS_ERROR, payload: "" });
+    dispatch(isErrorFB(""));
   };
-  // const handleCancel = () => {
-  //   dispatch({ type: "isError", payload: "" });
-  // };
 
   return (
     <>
@@ -82,18 +76,18 @@ function App() {
 
               <Route
                 path="/login"
-                element={user ? <Navigate to="/home" /> : <Login />}
+                element={uid ? <Navigate to="/home" /> : <Login />}
               ></Route>
 
               <Route path="/signup" element={<SignUp />}></Route>
 
               <Route
                 path="/todo"
-                element={user ? <Todo /> : <Navigate to="/login" />}
+                element={uid ? <Todo /> : <Navigate to="/login" />}
               ></Route>
               <Route
                 path="/mypage"
-                element={user ? <MyPage /> : <Navigate to="/login" />}
+                element={uid ? <MyPage /> : <Navigate to="/login" />}
               ></Route>
               <Route path="/schedule" element={<Schedule />} />
               <Route path="/upload" element={<Upload />} />

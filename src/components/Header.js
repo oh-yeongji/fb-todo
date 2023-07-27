@@ -1,13 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useAuthContext, useLogout } from "../hooks/useFirebase";
+import { useLogout } from "../hooks/useFirebase";
 import { useSelector } from "react-redux";
 
 const Header = () => {
   //AuthContext로그아웃 실행으로 상태변경
   const { logout } = useLogout();
-
-  const { user } = useSelector(state => state);
+  const { displayName, email, uid } = useSelector(state => state.fbAuth);
   // console.log("============");
   //console.log(user);
   // const navigator = useNavigate();
@@ -15,15 +14,6 @@ const Header = () => {
   //fb 로그아웃
   const handleLogout = () => {
     logout();
-    // firebase.auth().signOut();
-    // console.log("로그아웃");
-
-    // //로그아웃 하고나면 들어있던 정보를변경하는것을 빈 문자열로 호출
-    // //그리고 홈으로 이동
-    // setFBName("");
-    // setFBEmail("");
-    // setFBUid("");
-    // navigator("/");
   };
   return (
     // component Header가 아님 html header임(말하자면)
@@ -47,7 +37,7 @@ const Header = () => {
           <li>
             {/* fbUid가 맞으면 todo 아니면 login으로 가라 */}
             <Link
-              to={user ? "/todo" : "/login"}
+              to={uid ? "/todo" : "/login"}
               className="text-white hover:text-orange-600"
             >
               Todo
@@ -71,11 +61,11 @@ const Header = () => {
         </ul>
 
         <div className="flex justify-center gap-5">
-          {user ? (
+          {uid ? (
             <div className="text-white">
-              {user.displayName}
-              {user.email}
-              {user.uid}
+              {displayName}
+              {email}
+              {uid}
               <button onClick={handleLogout}>로그아웃</button>
               <Link to="/mypage">마이페이지</Link>
             </div>

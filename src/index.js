@@ -12,6 +12,7 @@ import store from "./store/store";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   //store의 state를 사용할 범위 지정
+  // provider에 데이터 넣어주면 끝
   <Provider store={store}>
     <BrowserRouter>
       <App />

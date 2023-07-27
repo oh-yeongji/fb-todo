@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 //slice 초기값
 const initialState = {
-  user: null, // 사용자 정보
   uid: null,
   displayName: null,
   email: null,
@@ -17,23 +18,35 @@ const fbAuthSlice = createSlice({
   //상태를 즉시 업데이트(동기 코드)
   reducers: {
     loginFB: (state, action) => {
-      state.user = action.payload; //객체 바로들어가면 안되니까 뜨어서
+      // state.user = action.payload; //객체 바로들어가면 안되니까 뜯어서
+      state.displayName = action.payload.displayName;
+      state.uid = action.payload.uid;
+      state.email = action.payload.email;
     },
     logoutFB: state => {
-      state.user = null;
+      // state.user = null;
+      state.displayName = null;
+      state.uid = null;
+      state.email = null;
     },
     isAuthReadyFB: (state, action) => {
-      state.user = action.payload;
+      // state.user = action.payload;
+      console.log(action);
+      state.displayName = action.payload && action.payload.displayName;
+      state.uid = action.payload && action.payload.uid;
+      state.email = action.payload && action.payload.email;
       state.isAuthReady = true;
     },
     updateNameFB: (state, action) => {
-      state.user = action.payload;
+      // state.user = action.payload;
+      state.displayName = action.payload.displayName;
     },
     updateEmailFB: (state, action) => {
-      state.user = action.payload;
+      // state.user = action.payload;
+      state.email = action.payload.email;
     },
     deleteUserFB: (state, action) => {
-      state.user = null;
+      // state.user = null;
       state.displayName = null;
       state.uid = null;
       state.email = null;
@@ -46,7 +59,7 @@ const fbAuthSlice = createSlice({
 
 //store에 포함하기 위한 export (조각냈으니 모아야 함.)
 export default fbAuthSlice;
-//dispatch 활용
+//dispatch 활용(액션을 만들어줌)
 export const {
   loginFB,
   logoutFB,

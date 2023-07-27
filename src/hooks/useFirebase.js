@@ -1,5 +1,4 @@
-import { useContext, useState } from "react";
-// import { AuthContext } from "../context/AuthContext";
+import { useState } from "react";
 import {
   signInWithEmailAndPassword,
   signOut,
@@ -13,26 +12,19 @@ import { appAuth } from "../firebase/config";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
-  FB_DELETE_USER,
-  FB_IS_ERROR,
-  FB_LOGIN,
-  FB_LOGOUT,
-  FB_UPDATE_EMAIL,
-  FB_UPDATE_NAME,
-} from "../modules/fbreducer";
-
-//AuthContext Hook
-// export const useAuthContext = () => {
-//   const context = useContext(AuthContext);
-
-//   return context; //state,dispatch가 담겨있음.
-// };
+  deleteUserFB,
+  isErrorFB,
+  loginFB,
+  logoutFB,
+  updateEmailFB,
+  updateNameFB,
+} from "../reducers/fbAuthSlice";
 
 //사용자 로그인 Hook
 export const useLogin = () => {
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
-  // const { dispatch } = useAuthContext();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -47,10 +39,17 @@ export const useLogin = () => {
         password,
       );
       const user = userCredential.user; // ?
-      dispatch({ type: FB_LOGIN, payload: user });
-      navigate("/about");
+      // dispatch({ type: FB_LOGIN, payload: user });
+      dispatch(
+        loginFB({
+          email: user.email,
+          displayName: user.displayName,
+          uid: user.uid,
+        }),
+      );
+      navigate("/");
     } catch (err) {
-      console.log(err.message);
+      // console.log(err.message);
       let errMessage = "";
       if (err.code === "auth/invalid-email") {
         errMessage = "올바른 이메일 형식이 아닙니다.";
@@ -64,7 +63,8 @@ export const useLogin = () => {
         errMessage = "로그인이 실패하였습니다.";
       }
 
-      dispatch({ type: FB_IS_ERROR, payload: errMessage });
+      // dispatch({ type: FB_IS_ERROR, payload: errMessage });
+      dispatch(isErrorFB(errMessage)); //action의 payload
     }
   };
   return { error, isPending, login };
@@ -83,10 +83,11 @@ export const useLogout = () => {
     try {
       //FB로그아웃API
       await signOut(appAuth);
-      dispatch({ type: FB_LOGOUT });
+      dispatch(logoutFB());
       navigate("/");
     } catch (err) {
-      console.log(err.message);
+      // console.log(err.message);
+      dispatch(isErrorFB(err.message));
     }
   };
   return { error, isPending, logout };
@@ -127,12 +128,19 @@ export const useSignup = () => {
         return;
       }
       // 성공시에는 사용자 닉네임을 설정한다.
-      updateProfile(appAuth.currentUser, {
+      await updateProfile(appAuth.currentUser, {
         displayName: displayName,
         //   photoURL: "https://example.com/jane-q-user/profile.jpg",
       });
       // console.log("dispatch실행=====");
-      dispatch({ type: FB_LOGIN, payload: "user" });
+      // dispatch({ type: FB_LOGIN, payload: user });
+      dispatch(
+        loginFB({
+          uid: appAuth.currentUser.uid,
+          email: appAuth.currentUser.email,
+          displayName: appAuth.currentUser.displayName,
+        }),
+      );
       // 에러 없음
       setError(null);
       // 연결 후 작업 완료
@@ -151,7 +159,8 @@ export const useSignup = () => {
       } else if (err.code == "auth/weak-password") {
         errMessage = "The password is too weak.";
       }
-      dispatch({ type: FB_IS_ERROR, payload: errMessage });
+      // dispatch({ type: FB_IS_ERROR, payload: errMessage });
+      dispatch(isErrorFB(err.message));
     }
   };
 
@@ -170,26 +179,45 @@ export const useUpdateEmail = () => {
   const updateMail = async email => {
     setError(null);
     setIsPending(true);
+    console.log("jjj", email);
     try {
       await updateEmail(appAuth.currentUser, email);
       setIsPending(false);
-      dispatch({ type: FB_UPDATE_EMAIL, payload: appAuth.currentUser });
+      // dispatch({ type: FB_UPDATE_EMAIL, payload: appAuth.currentUser });
+      dispatch(
+        updateEmailFB({
+          uid: appAuth.currentUser.uid,
+          email: appAuth.currentUser.email,
+          displayName: appAuth.currentUser.displayName,
+        }),
+      );
     } catch (err) {
       console.log(err.message);
       setIsPending(false);
       setError(err.message);
-      console.log(err);
+
       let errMessage = "";
       if (err.code == "auth/email-already-in-use") {
         errMessage = "The email address is already in use";
       } else if (err.code == "auth/invalid-email") {
         errMessage = "The email address is not valid.";
-      } else if (err.code == "auth/operation-not-allowed") {
-        errMessage = "Operation not allowed.";
-      } else if (err.code == "auth/weak-password") {
-        errMessage = "The password is too weak.";
+      } else {
+        errMessage = "이메일을 확인해 주세요.";
       }
-      dispatch({ type: FB_IS_ERROR, payload: errMessage });
+      dispatch(isErrorFB(errMessage));
+
+      // console.log(err);
+
+      // if (err.code == "auth/email-already-in-use") {
+      //   errMessage = "The email address is already in use";
+      // } else if (err.code == "auth/invalid-email") {
+      //   errMessage = "The email address is not valid.";
+      // } else if (err.code == "auth/operation-not-allowed") {
+      //   errMessage = "Operation not allowed.";
+      // } else if (err.code == "auth/weak-password") {
+      //   errMessage = "The password is too weak.";
+      // }
+      // dispatch({ type: FB_IS_ERROR, payload: errMessage });
     }
   };
   return { error, isPending, updateMail };
@@ -210,15 +238,23 @@ export const useUpdateNickName = () => {
       //FB의 닉네임 변경 API 사용
       await updateProfile(appAuth.currentUser, {
         displayName: displayName,
-        photoURL: "https://example.com/jane-q-user/profile.jpg",
+        // photoURL: "https://example.com/jane-q-user/profile.jpg",
       });
 
       //Context의 state 변경
-      dispatch({ type: FB_UPDATE_NAME, payload: appAuth.currentUser });
+      //dispatch({ type: FB_UPDATE_NAME, payload: appAuth.currentUser });
+      dispatch(
+        updateNameFB({
+          uid: appAuth.currentUser.uid,
+          email: appAuth.currentUser.uid.email,
+          displayName: appAuth.currentUser.displayName,
+        }),
+      ); //appAith가 payload니까 똑같은거 전송하면 됨.
     } catch (err) {
       console.log(err.message);
       setIsPending(false);
       setError(err.message);
+      dispatch(isErrorFB(err.message));
     }
   };
   return { error, isPending, updateNickName };
@@ -228,7 +264,7 @@ export const useUpdateNickName = () => {
 export const useUpdatePass = () => {
   const [error, setError] = useState(null);
   const [isPending, setIsPending] = useState(false);
-
+  const dispatch = useDispatch();
   const updatePass = async newPass => {
     setError(null);
     setIsPending(true);
@@ -240,12 +276,20 @@ export const useUpdatePass = () => {
       console.log(err.message);
       setIsPending(false);
       setError(err.message);
+
+      let errMessage = "";
+      if (err.code == "auth/weak-password") {
+        errMessage = "The password is too weak.";
+      } else {
+        errMessage = "비밀번호 다시 입력해 주세요.";
+      }
+      dispatch(isErrorFB(errMessage));
     }
   };
   return { error, isPending, updatePass };
 };
 
-//회원 탈회 Hook
+//회원 탈퇴 Hook
 export const useUserDelete = () => {
   const navigate = useNavigate();
   // const { dispatch } = useAuthContext();
@@ -259,12 +303,14 @@ export const useUserDelete = () => {
     try {
       await deleteUser(appAuth.currentUser);
       setIsPending(false);
-      dispatch({ type: FB_DELETE_USER });
+      // dispatch({ type: FB_DELETE_USER });
+      dispatch(deleteUserFB());
       navigate("/");
     } catch (err) {
       console.log(err.message);
       setIsPending(false);
       setError(err.message);
+      dispatch(isErrorFB(err.Message));
     }
   };
 
