@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Checkbox, Form, Input, Modal } from "antd";
-import { useLogin } from "../hooks/useFirebase";
+import { asyncLoginFetch } from "../reducers/actions";
+import { useDispatch } from "react-redux";
+// import { useLogin } from "../hooks/useFirebase";
 
 const Login = () => {
-  const { login } = useLogin();
+  //return 한것 중에 login만 쓰겠다.
+  // const { login } = useLogin();
+
   // Link , NavLink , useNavigate
   const navigate = useNavigate();
 
   //로그인
-
+  const dispatch = useDispatch();
   const onFinish = values => {
-    // console.log("Success:", values);
-
-    login(values.email, values.password);
-
+    // login(values.email, values.password);
+    //dispatch 를 통해서 액션을 만들어/액션 담거나
+    dispatch(
+      //dispatch에서 매개변수가 필요하면 객체로 만들어주자.
+      asyncLoginFetch({ email: values.email, password: values.password }),
+    );
     //firebase 로그인 시도
     // try {
     //   //values 이 부분은 원래는 state
@@ -31,9 +37,7 @@ const Login = () => {
     //   navigate("/");
     // } catch (error) {
     //   console.log(error.code);
-
     //   setIsModalOpen(true);
-
     //   if (error.code === "auth/invalid-email") {
     //     setModalMessage("올바른 이메일 형식이 아닙니다.");
     //   } else if (error.code === "auth/wrong-password") {

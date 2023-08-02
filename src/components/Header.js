@@ -1,19 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useLogout } from "../hooks/useFirebase";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { asyncLoginFetch } from "../reducers/actions";
 
 const Header = () => {
   //AuthContext로그아웃 실행으로 상태변경
-  const { logout } = useLogout();
+  // const { logout } = useLogout();
   const { displayName, email, uid } = useSelector(state => state.fbAuth);
   // console.log("============");
   //console.log(user);
   // const navigator = useNavigate();
+  const dispatch = useDispatch();
 
   //fb 로그아웃
   const handleLogout = () => {
-    logout();
+    // logout();
+    dispatch(asyncLoginFetch());
   };
   return (
     // component Header가 아님 html header임(말하자면)
