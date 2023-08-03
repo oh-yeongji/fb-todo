@@ -14,13 +14,15 @@ const Login = () => {
 
   //로그인
   const dispatch = useDispatch();
-  const onFinish = values => {
+  const onFinish = async values => {
     // login(values.email, values.password);
     //dispatch 를 통해서 액션을 만들어/액션 담거나
-    dispatch(
+    await dispatch(
       //dispatch에서 매개변수가 필요하면 객체로 만들어주자.
       asyncLoginFetch({ email: values.email, password: values.password }),
-    );
+    ).unwrap();
+    //후속처리
+    navigate("/");
     //firebase 로그인 시도
     // try {
     //   //values 이 부분은 원래는 state

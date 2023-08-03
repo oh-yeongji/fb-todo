@@ -65,7 +65,7 @@ const fbAuthSlice = createSlice({
   // 비동기 업데이트 체크(미들웨어) 코드
   // axios 또는 fetch 를 이용합니다.
   // 비동기 액션(thunk 리듀서)에 따른 액션처리
-  //pending(호출중) / fulfiied(결과리턴) / rejected(호출실패)
+  //pending(호출중) / fulfilled(결과리턴) / rejected(호출실패)
   extraReducers: builder => {
     builder.addCase(asyncLoginFetch.pending, (state, action) => {
       console.log("로그인 연결중...");
@@ -90,7 +90,7 @@ const fbAuthSlice = createSlice({
     builder.addCase(asyncLoginFetch.rejected, (state, action) => {
       console.log("네트워크 에러");
       state.isLoading = false;
-      state.errMessage = "네트워크 연결 오류입니다.";
+      state.errMessage = action.payload.errMessage; //rejected된것
     });
     // logout 케이스
     builder.addCase(asyncLogoutFetch.fulfilled, (state, action) => {

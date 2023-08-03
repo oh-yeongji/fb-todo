@@ -14,9 +14,10 @@ const Header = () => {
   const dispatch = useDispatch();
 
   //fb 로그아웃
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // logout();
-    dispatch(asyncLoginFetch());
+    await dispatch(asyncLoginFetch()).unwrap(); 
+    //후속처리
   };
   return (
     // component Header가 아님 html header임(말하자면)
