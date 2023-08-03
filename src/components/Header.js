@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useLogout } from "../hooks/useFirebase";
 import { useDispatch, useSelector } from "react-redux";
-import { asyncLoginFetch } from "../reducers/actions";
+import { asyncLoginFetch, asyncLogoutFetch } from "../reducers/actions";
+import { sagaLogoutFB } from "../reducers/fbAuthSlice";
 
 const Header = () => {
   //AuthContext로그아웃 실행으로 상태변경
@@ -15,9 +16,14 @@ const Header = () => {
 
   //fb 로그아웃
   const handleLogout = async () => {
-    // logout();
-    await dispatch(asyncLoginFetch()).unwrap(); 
-    //후속처리
+    // try {
+    //   // logout();
+    //   await dispatch(asyncLogoutFetch()).unwrap();
+    //   //후속처리
+    // } catch (err) {
+    //   console.log(err);
+    // }
+    dispatch(sagaLogoutFB());
   };
   return (
     // component Header가 아님 html header임(말하자면)

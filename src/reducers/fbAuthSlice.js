@@ -61,6 +61,32 @@ const fbAuthSlice = createSlice({
     isErrorFB: (state, action) => {
       state.errMessage = action.payload;
     },
+    //saga를 이용한 로그인
+    sagaLoginFB: (state, action) => {
+      console.log("사가를 이용한 로그인 시도", action.payload);
+    },
+    sagaLoginSuccessFB: (state, action) => {
+      console.log("사가를 이용한 로그인 성공", action.payload);
+      state.displayName = action.payload.displayName;
+      state.uid = action.payload.uid;
+      state.email = action.payload.email;
+    },
+    sagaLoginFailFB: (state, action) => {
+      console.log("사가를 이용한 로그인 실패 ", action.payload);
+    },
+    // saga 를 이용한 로그아웃 처리
+    sagaLogoutFB: (state, action) => {
+      console.log("사가를 이용한 로그아웃 시도", action.payload);
+    },
+    sagaLogoutSuccessFB: state => {
+      console.log("사가를 이용한 로그아웃 성공");
+      state.displayName = null;
+      state.uid = null;
+      state.email = null;
+    },
+    sagaLogoutFailFB: (state, action) => {
+      console.log("사가를 이용한 로그아웃 실패", action.payload);
+    },
   },
   // 비동기 업데이트 체크(미들웨어) 코드
   // axios 또는 fetch 를 이용합니다.
@@ -89,6 +115,7 @@ const fbAuthSlice = createSlice({
     });
     builder.addCase(asyncLoginFetch.rejected, (state, action) => {
       console.log("네트워크 에러");
+      console.log(action);
       state.isLoading = false;
       state.errMessage = action.payload.errMessage; //rejected된것
     });
@@ -115,6 +142,12 @@ export const {
   updateEmailFB,
   deleteUserFB,
   isErrorFB,
+  sagaLoginFB,
+  sagaLoginSuccessFB,
+  sagaLoginFailFB,
+  sagaLogoutFB,
+  sagaLogoutSuccessFB,
+  sagaLogoutFailFB,
 } = fbAuthSlice.actions;
 
 //비동기 액션 크리에이터 (dispatch 로 호출)

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Checkbox, Form, Input, Modal } from "antd";
-import { asyncLoginFetch } from "../reducers/actions";
+// import { asyncLoginFetch } from "../reducers/actions";
 import { useDispatch } from "react-redux";
+import { sagaLoginFB } from "../reducers/fbAuthSlice";
 // import { useLogin } from "../hooks/useFirebase";
 
 const Login = () => {
@@ -16,43 +17,21 @@ const Login = () => {
   const dispatch = useDispatch();
   const onFinish = async values => {
     // login(values.email, values.password);
+
     //dispatch 를 통해서 액션을 만들어/액션 담거나
-    await dispatch(
-      //dispatch에서 매개변수가 필요하면 객체로 만들어주자.
-      asyncLoginFetch({ email: values.email, password: values.password }),
-    ).unwrap();
-    //후속처리
-    navigate("/");
-    //firebase 로그인 시도
+
     // try {
-    //   //values 이 부분은 원래는 state
-    //   await firebase
-    //     .auth()
-    //     .signInWithEmailAndPassword(values.email, values.password);
-    //   console.log("로그인 성공");
-    //   //로그인 된 사용자 정보를 가지고 옴.
-    //   const user = firebase.auth().currentUser;
-    //   console.log(user);
-    //   setFBName(user.displayName);
-    //   setFBEmail(user.email);
-    //   setFBUid(user.uid);
+    //   await dispatch(
+    //     //dispatch에서 매개변수가 필요하면 객체로 만들어주자.
+    //     asyncLoginFetch({ email: values.email, password: values.password }),
+    //   ).unwrap();
+    //   //후속처리
     //   navigate("/");
-    // } catch (error) {
-    //   console.log(error.code);
-    //   setIsModalOpen(true);
-    //   if (error.code === "auth/invalid-email") {
-    //     setModalMessage("올바른 이메일 형식이 아닙니다.");
-    //   } else if (error.code === "auth/wrong-password") {
-    //     setModalMessage("올바르지않은 비밀번호입니다.");
-    //   } else if (error.code === "auth/user-not-found") {
-    //     setModalMessage("가입되지 않은 사용자 입니다.");
-    //   } else if (error.code === "auth/missing-email") {
-    //     setModalMessage("이메일이 입력되지않았습니다.");
-    //   } else {
-    //     setModalMessage("로그인이 실패하였습니다.");
-    //   }
-    //   showModal();
+    // } catch (err) {
+    //   console.log(err);
     // }
+
+    dispatch(sagaLoginFB({ email: values.email, password: values.password }));
   };
   const onFinishFailed = errorInfo => {
     //console.log("Failed:", errorInfo);
